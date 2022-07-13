@@ -12,14 +12,14 @@
       $NewDriveLetter = Get-ChildItem function:[d-z]: -Name | Where-Object { (New-Object System.IO.DriveInfo($_)).DriveType -eq 'NoRootDirectory' } | Sort-Object -Descending | Select-Object -First 1
 
       # Reassign volume to new drive letter
-      Set-WMIInstance -InputObject $volume -Arguments @{DriveLetter=$NewDriveLetter} -ErrorAction Stop | Out-Null
+      Set-WMIInstance -InputObject $volume -Arguments @{DriveLetter=$NewDriveLetter} -ErrorAction Stop
     }
 
 - name: Assign hard drives as per specficiation
   when: rearrange_drives
   ansible.windows.win_shell: |
-    Get-WMIObject -Class Win32_Volume -Filter "Label='{{ drive.label }}'" -ErrorAction Stop
-    Set-WMIInstance -InputObject $volume -Arguments @{DriveLetter={{ drive.letter }}} -ErrorAction Stop | Out-Null
+    Get-WMIObject -Class Win32_Volume -Filter "Label='{{ drive.label }}'" -ErrorAction Stop |
+      Set-WMIInstance -Arguments @{DriveLetter="{{ drive.letter }}"} -ErrorAction Stop
   loop: "{{ drive_configuration }}"
   loop_control:
     loop_var: drive
@@ -32,11 +32,12 @@
 
     Get-WMIObject -Class Win32_CDROMDrive -ErrorAction Stop | ForEach-Object {
       # Get volume object for drive
-      $volume = Get-WMIObject -Class Win32_Volume -Filter "DriveLetter='$_.drive'" -ErrorAction Stop
+      $CurrentDriveLetter = $_.drive
+      $volume = Get-WMIObject -Class Win32_Volume -Filter "DriveLetter='$CurrentDriveLetter'" -ErrorAction Stop
 
       # Find first free drive letter after final hard drive
       $NewDriveLetter = Get-ChildItem function:[$LastHardDrive-z]: -Name | Where-Object { (New-Object System.IO.DriveInfo($_)).DriveType -eq 'NoRootDirectory' } | Select-Object -First 1
 
       # Reassign volume to new drive letter
-      Set-WMIInstance -InputObject $volume -Arguments @{DriveLetter=$NewDriveLetter} -ErrorAction Stop | Out-Null
+      Set-WMIInstance -InputObject $volume -Arguments @{DriveLetter=$NewDriveLetter} -ErrorAction Stop
     }
