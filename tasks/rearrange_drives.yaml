@@ -18,8 +18,8 @@
 - name: Assign hard drives as per specficiation
   when: rearrange_drives
   ansible.windows.win_shell: |
-    Get-WMIObject -Class Win32_Volume -Filter "Label='{{ drive.label }}'" -ErrorAction Stop |
-      Set-WMIInstance -Arguments @{DriveLetter="{{ drive.letter }}"} -ErrorAction Stop
+    $volume = Get-WMIObject -Class Win32_Volume -Filter "Label='{{ drive.label }}'" -ErrorAction Stop
+    Set-WMIInstance -InputObject $volume -Arguments @{DriveLetter="{{ drive.letter }}"} -ErrorAction Stop
   loop: "{{ drive_configuration }}"
   loop_control:
     loop_var: drive
