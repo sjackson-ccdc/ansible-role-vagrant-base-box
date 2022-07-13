@@ -3,9 +3,9 @@
 
 - name: Move optical drives to end of alphabet
   ansible.windows.win_shell: |
-    Get-WMIObject -Class Win32_CDROMDrive -ComputerName $Computer -ErrorAction Stop | ForEach-Object {
+    Get-WMIObject -Class Win32_CDROMDrive  -ErrorAction Stop | ForEach-Object {
       # Get volume object for drive
-      $volume = Get-WMIObject -Class Win32_Volume -ComputerName $Computer -Filter "DriveLetter='$_.drive'" -ErrorAction Stop
+      $volume = Get-WMIObject -Class Win32_Volume -Filter "DriveLetter='$_.drive'" -ErrorAction Stop
 
       # Find first free drive letter backwards from Z:
       $NewDriveLetter = Get-ChildItem function:[d-z]: -Name | Where-Object { (New-Object System.IO.DriveInfo($_)).DriveType -eq 'NoRootDirectory' } | Sort-Object -Descending | Select-Object -First 1
@@ -29,9 +29,9 @@
     # Find drive letter for final hard drive
     $LastHardDrive = (Get-Volume | Where-Object {$_.DriveType -eq "Fixed"} | Sort-Object -Property DriveLetter | Select-Object -Last 1).DriveLetter
 
-    Get-WMIObject -Class Win32_CDROMDrive -ComputerName $Computer -ErrorAction Stop | ForEach-Object {
+    Get-WMIObject -Class Win32_CDROMDrive -ErrorAction Stop | ForEach-Object {
       # Get volume object for drive
-      $volume = Get-WMIObject -Class Win32_Volume -ComputerName $Computer -Filter "DriveLetter='$_.drive'" -ErrorAction Stop
+      $volume = Get-WMIObject -Class Win32_Volume -Filter "DriveLetter='$_.drive'" -ErrorAction Stop
 
       # Find first free drive letter after final hard drive
       $NewDriveLetter = Get-ChildItem function:[$LastHardDrive-z]: -Name | Where-Object { (New-Object System.IO.DriveInfo($_)).DriveType -eq 'NoRootDirectory' } | Select-Object -First 1
