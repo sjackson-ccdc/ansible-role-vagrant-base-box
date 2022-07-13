@@ -5,7 +5,8 @@
   ansible.windows.win_shell: |
     Get-WMIObject -Class Win32_CDROMDrive  -ErrorAction Stop | ForEach-Object {
       # Get volume object for drive
-      $volume = Get-WMIObject -Class Win32_Volume -Filter "DriveLetter='$_.drive'" -ErrorAction Stop
+      $CurrentDriveLetter = $_.drive
+      $volume = Get-WMIObject -Class Win32_Volume -Filter "DriveLetter='$CurrentDriveLetter'" -ErrorAction Stop
 
       # Find first free drive letter backwards from Z:
       $NewDriveLetter = Get-ChildItem function:[d-z]: -Name | Where-Object { (New-Object System.IO.DriveInfo($_)).DriveType -eq 'NoRootDirectory' } | Sort-Object -Descending | Select-Object -First 1
