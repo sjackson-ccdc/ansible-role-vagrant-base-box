@@ -1,0 +1,4 @@
+---
+- name: Set Windows power plan to {{ power_plan }}
+  community.windows.win_power_plan:
+    name: "{{ power_plan }}"

@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  role_name: vagrant-base-box
+  namespace: ccdc_opensource
+  author: Florian Piesche
+  description: A role to provision base VM images for Vagrant boxes
+  company: The Cambridge Crystallographic Data Centre
+  issue_tracker_url: https://ccdc-cambridge.atlassian.net
+  license: "All Rights Reserved"
+  min_ansible_version: 2.9
+
+  platforms:
+    - name: Windows
+      versions:
+        - all
+  galaxy_tags:
+    - ccdc
+
+dependencies: []

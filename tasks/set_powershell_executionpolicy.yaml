@@ -1,0 +1,15 @@
+---
+- name: Set 32-bit PowerShell execution policy
+  when: set_execution_policy
+  ansible.windows.win_command: >
+    C:\\Windows\\SysWOW64\\cmd /c
+    PowerShell -Command
+    "Set-ExecutionPolicy -ExecutionPolicy {{ target_execution_policy }} -Force"
+  become: true
+
+- name: Set 64-bit PowerShell execution policy
+  when: set_execution_policy
+  ansible.windows.win_command: >
+    PowerShell -Command
+    "Set-ExecutionPolicy -ExecutionPolicy {{ target_execution_policy }} -Force"
+  become: true

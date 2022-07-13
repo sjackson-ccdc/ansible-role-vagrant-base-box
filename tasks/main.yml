@@ -1,0 +1,12 @@
+---
+- ansible.builtin.include_tasks: rearrange_drives.yaml
+- ansible.builtin.include_tasks: update_windows.yaml
+- ansible.builtin.include_tasks: precompile_dotnet_assemblies.yaml
+- ansible.builtin.include_tasks: set_powershell_executionpolicy.yaml
+- ansible.builtin.include_tasks: disable_vagrant_password_expiry.yaml
+- ansible.builtin.include_tasks: set_all_networks_private.yaml
+- ansible.builtin.include_tasks: enable_psremoting.yaml
+- ansible.builtin.include_tasks: enable_rdp.yaml
+- ansible.builtin.include_tasks: enable_ssh.yaml
+- ansible.builtin.include_tasks: enable_uac.yaml
+- ansible.builtin.include_tasks: set_power_plan.yaml
