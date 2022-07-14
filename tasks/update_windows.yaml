@@ -4,4 +4,3 @@
   ansible.windows.win_updates:
     category_names: '*'
     reboot: true
-  become: true
