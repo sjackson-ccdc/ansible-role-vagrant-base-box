@@ -40,7 +40,7 @@
       $volume = Get-WMIObject -Class Win32_Volume -Filter "DriveLetter='$CurrentDriveLetter'" -ErrorAction Stop
 
       # Find first free drive letter after final hard drive
-      $NewDriveLetter = Get-ChildItem function:[{{ final_hard_drive.stdout | trim }}-z]: -Name | Where-Object { (New-Object System.IO.DriveInfo($_)).DriveType -eq 'NoRootDirectory' } | Select-Object -First 1
+      $NewDriveLetter = Get-ChildItem function:[{{ final_hard_drive.stdout | trim | lower }}-z]: -Name | Where-Object { (New-Object System.IO.DriveInfo($_)).DriveType -eq 'NoRootDirectory' } | Select-Object -First 1
 
       Write-Host "Reassigning $CurrentDriveLetter to $NewDriveLetter"
       Set-WMIInstance -InputObject $volume -Arguments @{DriveLetter=$NewDriveLetter} -ErrorAction Stop
