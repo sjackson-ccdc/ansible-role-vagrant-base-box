@@ -1,4 +1,4 @@
 ---
 - name: Enable PowerShell remoting
   when: enable_psremoting
-  ansible.windows.win_shell: Enable-PSRemoting -SkipNetworkProfileCheck Get-PSSessionConfiguration
+  ansible.windows.win_shell: Enable-PSRemoting -SkipNetworkProfileCheck
