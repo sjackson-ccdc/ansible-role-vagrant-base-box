@@ -2,7 +2,7 @@
 - name: Suppress prompt for network location
   when: set_all_networks_private
   ansible.windows.win_regedit:
-    path: HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Network\\NewNetworkWindowOff
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Network\NewNetworkWindowOff
     state: present
   become: true
 

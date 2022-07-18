@@ -2,7 +2,7 @@
 - name: Enable User Account Control
   when: enable_uac
   ansible.windows.win_regedit:
-    path: HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
     name: EnableLUA
     type: REG_DWORD
     data: 1
