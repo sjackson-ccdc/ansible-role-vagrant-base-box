@@ -1,6 +1,6 @@
 ---
 - name: Install OpenSSH server and client
-  when: enable_ssh
+  when: enable_ssh and ansible.os_installation_type == "Server"
   ansible.windows.win_feature:
     state: present
     name: "{{ capability }}"
@@ -12,7 +12,7 @@
   become: true
 
 - name: Ensure firewall rule for OpenSSH service exists
-  when: enable_ssh
+  when: enable_ssh and ansible.os_installation_type == "Server"
   community.windows.win_firewall_rule:
     name: OpenSSH Server (sshd)
     localport: 22
@@ -24,7 +24,7 @@
   become: true
 
 - name: Add insecure vagrant ssh key to authorized_keys
-  when: enable_ssh and add_vagrant_ssh_pubkey
+  when: enable_ssh and add_vagrant_ssh_pubkey and ansible.os_installation_type == "Server"
   ansible.posix.authorized_key:
     user: vagrant
     state: present
@@ -32,7 +32,7 @@
   become: true
 
 - name: Start and enable OpenSSH service
-  when: enable_ssh
+  when: enable_ssh and ansible.os_installation_type == "Server"
   ansible.windows.win_service:
     name: sshd
     state: running
