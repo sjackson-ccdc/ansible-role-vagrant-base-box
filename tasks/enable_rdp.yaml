@@ -16,6 +16,6 @@
   ansible.windows.win_regedit:
     path: HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server
     name: fDenyTSConnections
-    type: REG_DWORD
+    type: dword
     data: 0
   become: true
