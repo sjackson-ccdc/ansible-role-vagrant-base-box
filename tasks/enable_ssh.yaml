@@ -1,4 +1,6 @@
 ---
+# The win_feature module only works on Windows Server editions
+# and OpenSSH is in fact unavailable on Client installations.
 - name: Install OpenSSH server and client
   when: enable_ssh and ansible.os_installation_type == "Server"
   ansible.windows.win_feature:
