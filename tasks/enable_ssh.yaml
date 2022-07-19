@@ -13,7 +13,7 @@
 
 - name: Ensure firewall rule for OpenSSH service exists
   when: enable_ssh
-  ansible.windows.win_firewall_rule:
+  community.windows.win_firewall_rule:
     name: OpenSSH Server (sshd)
     localport: 22
     action: allow
