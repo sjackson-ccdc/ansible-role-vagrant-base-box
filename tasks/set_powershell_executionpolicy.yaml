@@ -2,7 +2,7 @@
 - name: Set 32-bit PowerShell execution policy
   when: set_execution_policy
   ansible.windows.win_command: >
-    C:\\Windows\\SysWOW64\\cmd /c
+    {{ ansible_env.SystemRoot }}\\SysWOW64\\cmd /c
     PowerShell -Command
     "try { Set-ExecutionPolicy -ExecutionPolicy {{ target_execution_policy }} -Scope {{ scope }} -Force } catch { }; exit 0"
   loop:
