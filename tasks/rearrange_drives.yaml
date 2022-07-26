@@ -28,7 +28,8 @@
   when: rearrange_drives
   ansible.windows.win_shell: |
     # Find drive letter for final hard drive
-    Write-Host (Get-Volume | Where-Object {$_.DriveType -eq "Fixed"} | Sort-Object -Property DriveLetter | Select-Object -Last 1).DriveLetter
+    Write-Host (Get-Volume | Where-Object {$_.DriveType -eq "Fixed"} | `
+      Sort-Object -Property DriveLetter | Select-Object -Last 1).DriveLetter
   register: final_hard_drive
 
 - name: Rearrange optical drives after hard drives
@@ -40,7 +41,9 @@
       $volume = Get-WMIObject -Class Win32_Volume -Filter "DriveLetter='$CurrentDriveLetter'" -ErrorAction Stop
 
       # Find first free drive letter after final hard drive
-      $NewDriveLetter = Get-ChildItem function:[{{ final_hard_drive.stdout | trim | lower }}-z]: -Name | Where-Object { (New-Object System.IO.DriveInfo($_)).DriveType -eq 'NoRootDirectory' } | Select-Object -First 1
+      $NewDriveLetter = Get-ChildItem function:[{{ final_hard_drive.stdout | trim | lower }}-z]: -Name | `
+        Where-Object { (New-Object System.IO.DriveInfo($_)).DriveType -eq 'NoRootDirectory' } | `
+        Select-Object -First 1
 
       Write-Host "Reassigning $CurrentDriveLetter to $NewDriveLetter"
       Set-WMIInstance -InputObject $volume -Arguments @{DriveLetter=$NewDriveLetter} -ErrorAction Stop
