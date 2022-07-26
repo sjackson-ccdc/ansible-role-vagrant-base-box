@@ -1,11 +1,21 @@
 ---
-- ansible.builtin.include_tasks: rearrange_drives.yaml
-- ansible.builtin.include_tasks: update_windows.yaml
-- ansible.builtin.include_tasks: precompile_dotnet_assemblies.yaml
-- ansible.builtin.include_tasks: set_powershell_executionpolicy.yaml
-- ansible.builtin.include_tasks: disable_vagrant_password_expiry.yaml
-- ansible.builtin.include_tasks: set_all_networks_private.yaml
-- ansible.builtin.include_tasks: enable_rdp.yaml
-- ansible.builtin.include_tasks: enable_ssh.yaml
-- ansible.builtin.include_tasks: enable_uac.yaml
-- ansible.builtin.include_tasks: set_power_plan.yaml
+- name: Rearrange drives
+  ansible.builtin.include_tasks: rearrange_drives.yaml
+- name: Install Windows updates
+  ansible.builtin.include_tasks: update_windows.yaml
+- name: Precompile .NET assemblies
+  ansible.builtin.include_tasks: precompile_dotnet_assemblies.yaml
+- name: Set PowerShell execution policy
+  ansible.builtin.include_tasks: set_powershell_executionpolicy.yaml
+- name: Disable password expiry for `vagrant` user
+  ansible.builtin.include_tasks: disable_vagrant_password_expiry.yaml
+- name: Set all network connections to be Private by default
+  ansible.builtin.include_tasks: set_all_networks_private.yaml
+- name: Enable RDP access
+  ansible.builtin.include_tasks: enable_rdp.yaml
+- name: Enable SSH access (Windows Server only)
+  ansible.builtin.include_tasks: enable_ssh.yaml
+- name: Enable User Account Control
+  ansible.builtin.include_tasks: enable_uac.yaml
+- name: Set power management plan
+  ansible.builtin.include_tasks: set_power_plan.yaml

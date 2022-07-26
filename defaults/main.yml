@@ -3,7 +3,6 @@ set_execution_policy: true
 target_execution_policy: "RemoteSigned"
 
 enable_rdp: true
-enable_psremoting: true
 enable_ssh: true
 add_vagrant_ssh_pubkey: true
 enable_uac: true
