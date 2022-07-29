@@ -34,10 +34,9 @@
 
 - name: Add insecure vagrant ssh key to authorized_keys
   when: enable_ssh and add_vagrant_ssh_pubkey and ansible_facts.os_installation_type == "Server"
-  ansible.posix.authorized_key:
-    user: vagrant
-    state: present
-    key: "{{ lookup('url', 'https://raw.github.com/hashicorp/vagrant/master/keys/vagrant.pub', split_lines=False) }}"
+  community.windows.win_lineinfile:
+    line: "{{ lookup('url', 'https://raw.github.com/hashicorp/vagrant/master/keys/vagrant.pub', split_lines=False) }}"
+    path: C:\Users\vagrant\.ssh\authorized_keys
   become: true
 
 - name: Start and enable OpenSSH service
