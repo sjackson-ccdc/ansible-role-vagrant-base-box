@@ -3,9 +3,8 @@
 # and OpenSSH is in fact unavailable on Client installations.
 - name: Install OpenSSH server and client
   when: enable_ssh and ansible_facts.os_installation_type == "Server"
-  ansible.windows.win_feature:
-    state: present
-    name: "{{ capability }}"
+  ansible.windows.win_shell: |
+    Add-WindowsCapability -Name {{ capability }} -Online
   loop:
   - OpenSSH.Client~~~~0.0.1.0
   - OpenSSH.Server~~~~0.0.1.0
@@ -24,6 +23,14 @@
     state: present
     enabled: true
   become: true
+
+- name: Set the default OpenSSH shell to PowerShell
+  ansible.community.win_regedit:
+    path: HKLM:\SOFTWARE\OpenSSH
+    name: DefaultShell
+    data: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+    type: string
+    state: present
 
 - name: Add insecure vagrant ssh key to authorized_keys
   when: enable_ssh and add_vagrant_ssh_pubkey and ansible_facts.os_installation_type == "Server"
