@@ -50,6 +50,6 @@
   when: enable_ssh and ansible_facts.os_installation_type == "Server"
   ansible.windows.win_service:
     name: sshd
-    state: running
+    state: started
     start_mode: auto
   become: true
