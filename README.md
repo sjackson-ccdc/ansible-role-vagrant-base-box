@@ -1,8 +1,8 @@
 # ccdc.vagrant-base-box
 
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-ccdc.debloat_windows-blue.svg)](https://galaxy.ansible.com/ccdc/debloat_windows/)
-[![Ansible Lint](https://github.com/ccdc-opensource/ansible-role-debloat-windows/actions/workflows/lint-ansible-role.yml/badge.svg)](https://github.com/ccdc-opensource/ansible-role-debloat-windows/actions/workflows/lint-ansible-role.yml)
-[![Common CCDC PR Checks](https://github.com/ccdc-opensource/ansible-role-debloat-windows/actions/workflows/common_ccdc_status_checks.yml/badge.svg)](https://github.com/ccdc-opensource/ansible-role-debloat-windows/actions/workflows/common_ccdc_status_checks.yml)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-ccdc.vagrant-base-box-blue.svg)](https://galaxy.ansible.com/ccdc/debloat_windows/)
+[![Ansible Lint](https://github.com/ccdc-opensource/ansible-role-vagrant-base-box/actions/workflows/lint-ansible-role.yml/badge.svg)](https://github.com/ccdc-opensource/ansible-role-debloat-windows/actions/workflows/lint-ansible-role.yml)
+[![Common CCDC PR Checks](https://github.com/ccdc-opensource/ansible-role-vagrant-base-box/actions/workflows/common_ccdc_status_checks.yml/badge.svg)](https://github.com/ccdc-opensource/ansible-role-debloat-windows/actions/workflows/common_ccdc_status_checks.yml)
 
 An Ansible role to perform some provisioning on virtual machines for exporting as Vagrant base boxes.
 
