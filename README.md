@@ -30,7 +30,8 @@ Most of the variables for this role are simple booleans to determine which deblo
 
 ### Rearrange hard drives
 
-This task will rearrange all hard drives as per a given specification and then sort all optical drives to after the final hard drive.
+This task will rearrange all hard drives as per a given specification and then sort all optical drives to
+after the final hard drive.
 
 | Variable              |  Default  | Comments                                                    |
 |-----------------------|-----------|-------------------------------------------------------------|
@@ -84,23 +85,22 @@ Doing this can save some time when using .NET on the finished build machine.
 
 ### Set all network connections as `private` by default
 
-| Variable                          | Default | Comments                                                                    |
-|-----------------------------------|---------|-----------------------------------------------------------------------------|
-| `disable_network_location_prompt` | `true`  | Whether to disable the prompt for network types on new network connections. |
-| `set_all_networks_private`        | `true`  | Whether to set all current network connections to be "Private"              |
+| Variable                          | Default | Comments                                                           |
+|-----------------------------------|---------|--------------------------------------------------------------------|
+| `disable_network_location_prompt` | `true`  | Whether to disable network type prompt on new network connections. |
+| `set_all_networks_private`        | `true`  | Whether to set all current network connections to be "Private"     |
 
 ### Enable RDP, SSH and User Account control
 
-| Variable                 | Default | Comments                                                                                                    |
-|--------------------------|---------|-------------------------------------------------------------------------------------------------------------|
-| `enable_rdp`             | `true`  | Whether to set the system up to allow access via RDP.                                                       |
-| `enable_ssh`             | `true`  | Whether to set the system up to allow access via SSH.                                                       |
-| `add_vagrant_ssh_pubkey` | `true`  | Whether to add the default insecure Vagrant SSH public key to the `authorized_keys` for the `vagrant` user. |
-| `enable_uac`             | `true`  | Whether to enable User Account Control.                                                                     |
+| Variable                 | Default | Comments                                                                |
+|--------------------------|---------|-------------------------------------------------------------------------|
+| `enable_rdp`             | `true`  | Whether to set the system up to allow access via RDP.                   |
+| `enable_ssh`             | `true`  | Whether to set the system up to allow access via SSH.                   |
+| `add_vagrant_ssh_pubkey` | `true`  | Add the default Vagrant SSH public key to `vagrant`'s `authorized_keys` |
+| `enable_uac`             | `true`  | Whether to enable User Account Control.                                 |
 
 ### Set Power Management plan
 
 | Variable     | Default            | Comments                                                            |
 |--------------|--------------------|---------------------------------------------------------------------|
 | `power_plan` | `High performance` | The name of the Windows power management plan to set on the system. |
-
