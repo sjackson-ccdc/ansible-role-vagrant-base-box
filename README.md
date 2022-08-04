@@ -42,7 +42,7 @@ This task will rearrange all hard drives as per a given specification and then s
 At the CCDC, Windows build machines have two drives in addition to the system drive. These are assigned
 drive letters as per this specification:
 
-```
+```yaml
 drive_configuration:
   - letter: d
     label: x_mirror
