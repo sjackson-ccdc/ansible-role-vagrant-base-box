@@ -4,3 +4,12 @@
   ansible.windows.win_updates:
     category_names: '*'
     reboot: true
+    # Workaround for Ansible failing the task if Windows Update installs an updated network driver
+    # as per https://github.com/ansible-collections/ansible.windows/issues/190#issuecomment-1116187505
+    ignore_unreachable: true
+
+- name: Install all updates and reboot as many times as needed
+  when: update_windows
+  ansible.windows.win_updates:
+    category_names: '*'
+    reboot: true
