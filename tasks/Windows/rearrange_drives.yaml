@@ -1,6 +1,4 @@
 ---
-# Extremely not idempotent step by step but should have consistent results if run in full
-
 - name: Move optical drives to end of alphabet
   ansible.windows.win_shell: |
     Get-WMIObject -Class Win32_CDROMDrive  -ErrorAction Stop | ForEach-Object {
@@ -9,14 +7,26 @@
       $volume = Get-WMIObject -Class Win32_Volume -Filter "DriveLetter='$CurrentDriveLetter'" -ErrorAction Stop
 
       # Find first free drive letter backwards from Z:
-      $NewDriveLetter = Get-ChildItem function:[d-z]: -Name | Where-Object { (New-Object System.IO.DriveInfo($_)).DriveType -eq 'NoRootDirectory' } | Sort-Object -Descending | Select-Object -First 1
+      $NewDriveLetter = Get-ChildItem function:[d-z]: -Name | `
+        Where-Object { (New-Object System.IO.DriveInfo($_)).DriveType -eq 'NoRootDirectory' } | `
+        Sort-Object -Descending | Select-Object -First 1
 
       # Reassign volume to new drive letter
       Set-WMIInstance -InputObject $volume -Arguments @{DriveLetter=$NewDriveLetter} -ErrorAction Stop
     }
 
+- name: Bring specified disks online on Windows Server
+  when: ansible_facts.os_installation_type == "Server"
+  community.windows.win_initialize_disk:
+    disk_number: "{{ disk.number }}"
+    online: "{{ disk.online | default(true) }}"
+    force: "{{ disk.force_initialize | default(true) }}"
+    style: "{{ disk.style | default('gpt') }}"
+  loop: "{{ initialize_disks }}"
+  loop_control:
+    loop_var: disk
+
 - name: Assign hard drives as per specficiation
-  when: rearrange_drives
   ansible.windows.win_shell: |
     $volume = Get-WMIObject -Class Win32_Volume -Filter "Label='{{ drive.label }}'" -ErrorAction Stop
     Set-WMIInstance -InputObject $volume -Arguments @{DriveLetter="{{ drive.letter }}:"} -ErrorAction Stop
@@ -25,7 +35,6 @@
     loop_var: drive
 
 - name: Get final hard drive letter
-  when: rearrange_drives
   ansible.windows.win_shell: |
     # Find drive letter for final hard drive
     Write-Host (Get-Volume | Where-Object {$_.DriveType -eq "Fixed"} | `
@@ -33,7 +42,6 @@
   register: final_hard_drive
 
 - name: Rearrange optical drives after hard drives
-  when: rearrange_drives
   ansible.windows.win_shell: |
     Get-WMIObject -Class Win32_CDROMDrive -ErrorAction Stop | ForEach-Object {
       # Get volume object for drive

@@ -25,7 +25,6 @@
   become: true
 
 - name: Set the default OpenSSH shell to PowerShell
-  when: enable_ssh and ansible_facts.os_installation_type == "Server"
   ansible.windows.win_regedit:
     path: HKLM:\SOFTWARE\OpenSSH
     name: DefaultShell
@@ -34,20 +33,17 @@
     state: present
 
 - name: Ensure .ssh configuration directory exists for user vagrant
-  when: enable_ssh and ansible_facts.os_installation_type == "Server"
   ansible.windows.win_file:
     path: C:\Users\vagrant\.ssh
     state: directory
 
 - name: Add insecure vagrant ssh key to authorized_keys
-  when: enable_ssh and add_vagrant_ssh_pubkey and ansible_facts.os_installation_type == "Server"
   community.windows.win_lineinfile:
     line: "{{ lookup('url', 'https://raw.github.com/hashicorp/vagrant/master/keys/vagrant.pub', split_lines=False) }}"
     path: C:\Users\vagrant\.ssh\authorized_keys
     create: true
 
 - name: Start and enable OpenSSH service
-  when: enable_ssh and ansible_facts.os_installation_type == "Server"
   ansible.windows.win_service:
     name: sshd
     state: started

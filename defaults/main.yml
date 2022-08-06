@@ -1,6 +1,5 @@
 ---
-set_execution_policy: true
-target_execution_policy: "RemoteSigned"
+execution_policy: "RemoteSigned"
 
 enable_rdp: true
 enable_ssh: true
@@ -17,9 +16,5 @@ precompile_dotnet: true
 update_windows: true
 
 rearrange_drives: true
-
-drive_configuration:
-  - letter: d
-    label: x_mirror
-  - letter: e
-    label: builds
+initialize_disks: []
+drive_configuration: []

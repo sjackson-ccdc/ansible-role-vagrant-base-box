@@ -1,4 +1,0 @@
----
-- name: Update precompiled .NET assemblies
-  when: precompile_dotnet
-  community.windows.win_dotnet_ngen:
