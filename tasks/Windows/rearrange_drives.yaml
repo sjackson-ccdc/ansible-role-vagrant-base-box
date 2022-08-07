@@ -16,13 +16,11 @@
     }
 
 - name: Bring specified disks online on Windows Server
-  when: ansible_facts.os_installation_type == "Server"
-  community.windows.win_initialize_disk:
-    disk_number: "{{ disk.number }}"
-    online: "{{ disk.online | default(true) }}"
-    force: "{{ disk.force_initialize | default(true) }}"
-    style: "{{ disk.style | default('gpt') }}"
-  loop: "{{ initialize_disks }}"
+  when: disk.number is defined and disk.online is defined and ansible_facts.os_installation_type == "Server"
+  ansible.windows.win_shell: |
+    Set-Disk -Number {{ disk.number }} -IsOffline {{ "$False" if disk.online else "$True" }}
+    Set-Disk -Number {{ disk.number }} -IsReadonly {{ "$True" if disk.readonly is defined and disk.readonly else "$False" }}
+  loop: "{{ drive_configuration }}"
   loop_control:
     loop_var: disk
 
