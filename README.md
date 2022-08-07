@@ -26,17 +26,34 @@ For provisioning Windows VMs, this role requires the
 
 ## Role Variables
 
-Most of the variables for this role are simple booleans to determine which debloating features should be run.
+Most of the variables for this role are simple booleans to determine which customization tasks
+should be run; the only task with complex variables controlling its behaviour is the task to
+rearrange the system's drives (see below).
+
+| Variable                          | Default value      | Comments                                                                  |
+|-----------------------------------|--------------------|---------------------------------------------------------------------------|
+| `update_windows`                  | `true`             | Whether or not to install any available operating system updates.         |
+| `precompile_dotnet`               | `true`             | Whether or not to precompile .NET assemblies.                             |
+| `target_execution_policy`         | `RemoteSigned`     | The execution policy to set. Set this to an empty string to skip.         |
+| `disable_vagrant_password_expiry` | `true`             | Whether to disable password expiration for the `vagrant` user.            |
+| `disable_network_location_prompt` | `true`             | Whether to disable network type prompt on new network connections.        |
+| `set_all_networks_private`        | `true`             | Whether to set all current network connections to be "Private".           |
+| `enable_rdp`                      | `true`             | Whether to set the system up to allow access via RDP.                     |
+| `enable_ssh`                      | `true`             | Whether to set the system up to allow access via SSH.                     |
+| `add_vagrant_ssh_pubkey`          | `true`             | Add the default Vagrant SSH public key to `vagrant`'s `authorized_keys`.  |
+| `enable_uac`                      | `true`             | Whether to enable User Account Control.                                   |
+| `power_plan`                      | `High performance` | The Windows power management plan to set. Set to an empty string to skip. |
 
 ### Rearrange hard drives
 
 This task will rearrange all hard drives as per a given specification and then sort all optical drives to
 after the final hard drive.
 
-| Variable              |  Default  | Comments                                                    |
-|-----------------------|-----------|-------------------------------------------------------------|
-| `rearrange_drives`    | `true`    | Whether or not to rearrange hard drives                     |
-| `drive_configuration` | see below | A list of mappings of drive labels to their desired letters |
+| Variable              |  Default  | Comments                                                                  |
+|-----------------------|-----------|---------------------------------------------------------------------------|
+| `rearrange_drives`    | `true`    | Whether or not to rearrange drives. Set to false to skip the entire task. |
+| `initialize_disks`    | see below | Disks to bring online/offline on Windows Server.                          |
+| `drive_configuration` | see below | A list of mappings of drive labels to their desired letters.              |
 
 #### Default values for `drive_configuration`
 
@@ -56,51 +73,18 @@ libraries, data etc. required to build our software. You can similarly assign sp
 to any drives you've specified in your VM configuration and formatted using the `<DiskConfiguration>`
 section in your Windows' `autounattend.xml` file.
 
-### Update operating system
+#### Default values for `initialize_disks`
 
-| Variable         | Default | Comments                                                          |
-|------------------|---------|-------------------------------------------------------------------|
-| `update_windows` | `true`  | Whether or not to install any available operating system updates. |
+On Windows Server operating systems, non-system drives may be offline and write-protected by default
+if Windows considers them to be SAN drives - this is, for example, the case on VMWare virtual machines
+with disks connected via the `pvscsi` driver. The `initialize_disks` variable, when set, allows
+for these disks to be initialized and brought online if required. For the CCDC Windows build machine
+setup with wo extra drives, this is specified like this:
 
-### Precompile .NET assemblies
-
-| Variable            | Default | Comments                                      |
-|---------------------|---------|-----------------------------------------------|
-| `precompile_dotnet` | `true`  | Whether or not to precompile .NET assemblies. |
-
-Doing this can save some time when using .NET on the finished build machine.
-
-### Set PowerShell execution policy
-
-| Variable                  | Default        | Comments                                                  |
-|---------------------------|----------------|-----------------------------------------------------------|
-| `set_execution_policy`    | `true`         | Whether to set PowerShell execution policy (system-wide). |
-| `target_execution_policy` | `RemoteSigned` | The execution policy to set.                              |
-
-### Disable `vagrant` user password expiration
-
-| Variable                          | Default | Comments                                                       |
-|-----------------------------------|---------|----------------------------------------------------------------|
-| `disable_vagrant_password_expiry` | `true`  | Whether to disable password expiration for the `vagrant` user. |
-
-### Set all network connections as `private` by default
-
-| Variable                          | Default | Comments                                                           |
-|-----------------------------------|---------|--------------------------------------------------------------------|
-| `disable_network_location_prompt` | `true`  | Whether to disable network type prompt on new network connections. |
-| `set_all_networks_private`        | `true`  | Whether to set all current network connections to be "Private"     |
-
-### Enable RDP, SSH and User Account control
-
-| Variable                 | Default | Comments                                                                |
-|--------------------------|---------|-------------------------------------------------------------------------|
-| `enable_rdp`             | `true`  | Whether to set the system up to allow access via RDP.                   |
-| `enable_ssh`             | `true`  | Whether to set the system up to allow access via SSH.                   |
-| `add_vagrant_ssh_pubkey` | `true`  | Add the default Vagrant SSH public key to `vagrant`'s `authorized_keys` |
-| `enable_uac`             | `true`  | Whether to enable User Account Control.                                 |
-
-### Set Power Management plan
-
-| Variable     | Default            | Comments                                                            |
-|--------------|--------------------|---------------------------------------------------------------------|
-| `power_plan` | `High performance` | The name of the Windows power management plan to set on the system. |
+```yaml
+initialize_disks:
+  - number: 1
+    online: true
+  - number: 2
+    online: true
+```

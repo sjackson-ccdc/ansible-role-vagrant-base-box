@@ -1,10 +1,9 @@
 ---
 - name: Set 32-bit PowerShell execution policy
-  when: set_execution_policy
   ansible.windows.win_command: >
     {{ ansible_env.SystemRoot }}\\SysWOW64\\cmd /c
     PowerShell -Command
-    "try { Set-ExecutionPolicy -ExecutionPolicy {{ target_execution_policy }} -Scope {{ scope }} -Force } catch { }; exit 0"
+    "try { Set-ExecutionPolicy -ExecutionPolicy {{ execution_policy }} -Scope {{ scope }} -Force } catch { }; exit 0"
   loop:
     - Process
     - LocalMachine
@@ -13,10 +12,9 @@
     loop_var: scope
 
 - name: Set 64-bit PowerShell execution policy
-  when: set_execution_policy
   ansible.windows.win_command: >
     PowerShell -Command
-    "try { Set-ExecutionPolicy -ExecutionPolicy {{ target_execution_policy }} -Scope {{ scope }} -Force } catch { }; exit 0"
+    "try { Set-ExecutionPolicy -ExecutionPolicy {{ execution_policy }} -Scope {{ scope }} -Force } catch { }; exit 0"
   loop:
     - Process
     - LocalMachine
